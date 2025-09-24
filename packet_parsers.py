@@ -24,6 +24,35 @@ def parse_ethernet_header(hex_data):
 # Parse ARP header
 def parse_arp_header(hex_data):
     hardware_type = int(hex_data[:4], 16)
+    protocol_type = int(hex_data[4:8], 16)
+    hardware_size = int(hex_data[8:10], 16)
+    protocol_size = int(hex_data[10:12], 16)
+    operation = int(hex_data[12:16], 16)
+    # MAC_Address = [int(hex_data[16:18]), int(hex_data[18,20]), int(hex_data[20,22]), int(hex_data[22,24]), int(hex_data[24,26]), int(hex_data[26:28])]
+    MAC_Address = hex_data[16:28]
+    Sender_IP = hex_data[28:36]
 
     print(f"ARP Header:")
     print(f"  {'Hardware Type:':<25} {hex_data[:4]:<20} | {hardware_type}")
+
+    # Byte 2 to 3 is the Protocol Type
+    print(f"  {'Protocol Type:':<25} {hex_data[4:8]:<20} | {protocol_type}")
+
+    # Byte 4 is the Hardware Size
+    print(f"  {'Hardware Size:':<25} {hex_data[8:10]:<20} | {hardware_size}")
+
+    # Byte 5 is the Protocol Size
+    print(f"  {'Protocol Size:':<25} {hex_data[10:12]:<20} | {protocol_size}")
+
+    # Byte 6 and 7 is the Operation
+    print(f"  {'Operation:':<25} {hex_data[12:16]:<20} | {operation}")
+
+    # Byte 8 to 13 is the MAC Address
+    result = ":".join(MAC_Address[i:i+2] for i in range(0, len(MAC_Address), 2))
+    print(f"  {'MAC Address:':<25} {hex_data[16:28]:<20} | {result}")
+
+    # Byte 14 to 17 is the IP Address
+    # result2 = ".".join(int(Sender_IP[i:i+2] for i in range(0, len(Sender_IP), 2)),16)
+    print(f"  {'Sender IP:':<25} {hex_data[28:36]:<20} | {result2}")
+
+
