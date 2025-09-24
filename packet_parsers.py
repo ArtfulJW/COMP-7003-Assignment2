@@ -52,7 +52,14 @@ def parse_arp_header(hex_data):
     print(f"  {'MAC Address:':<25} {hex_data[16:28]:<20} | {result}")
 
     # Byte 14 to 17 is the IP Address
-    # result2 = ".".join(int(Sender_IP[i:i+2] for i in range(0, len(Sender_IP), 2)),16)
+    # (Sender_IP[i:i+2] for i in range(0, len(Sender_IP)
+
+    result2 = []
+    for i in range(0, len(Sender_IP), 2):
+        result2.append(int(((Sender_IP[i:i+2])),16))
+    result2 = ".".join(str(item) for item in result2)
+
+
     print(f"  {'Sender IP:':<25} {hex_data[28:36]:<20} | {result2}")
 
 
