@@ -31,6 +31,8 @@ def parse_arp_header(hex_data):
     # MAC_Address = [int(hex_data[16:18]), int(hex_data[18,20]), int(hex_data[20,22]), int(hex_data[22,24]), int(hex_data[24,26]), int(hex_data[26:28])]
     MAC_Address = hex_data[16:28]
     Sender_IP = hex_data[28:36]
+    TargetMAC_Address = hex_data[36:48]
+    TargetIP_Address = hex_data[48:56]
 
     print(f"ARP Header:")
     print(f"  {'Hardware Type:':<25} {hex_data[:4]:<20} | {hardware_type}")
@@ -52,14 +54,24 @@ def parse_arp_header(hex_data):
     print(f"  {'MAC Address:':<25} {hex_data[16:28]:<20} | {result}")
 
     # Byte 14 to 17 is the IP Address
-    # (Sender_IP[i:i+2] for i in range(0, len(Sender_IP)
-
     result2 = []
     for i in range(0, len(Sender_IP), 2):
         result2.append(int(((Sender_IP[i:i+2])),16))
     result2 = ".".join(str(item) for item in result2)
-
-
     print(f"  {'Sender IP:':<25} {hex_data[28:36]:<20} | {result2}")
+
+    # Byte 18 to 23 is Target MAC Address
+    result3 = ":".join(TargetMAC_Address[i:i+2] for i in range(0, len(TargetMAC_Address), 2))
+    print(f"  {'Target MAC:':<25} {hex_data[36:48]:<20} | {result3}")
+
+    # Byte 24 to 27 is Target IP Address
+    result4 = []
+    for i in range(0, len(TargetIP_Address), 2):
+        result4.append(int(((TargetIP_Address[i:i+2])),16))
+    result4 = ".".join(str(item) for item in result4)
+    print(f"  {'Target IP:':<25} {hex_data[48:56]:<20} | {result4}")
+
+
+
 
 
