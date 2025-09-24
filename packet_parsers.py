@@ -71,7 +71,48 @@ def parse_arp_header(hex_data):
     result4 = ".".join(str(item) for item in result4)
     print(f"  {'Target IP:':<25} {hex_data[48:56]:<20} | {result4}")
 
+def parse_IPV4_header(hex_data):
+    version = int(hex_data[0:1], 16)
+    header_length = int(hex_data[1:2], 16)
+    total_length = int(hex_data[4:8], 16)
+    flags_fragoffset = int(hex_data[12:16], 16)
+    protocol = int(hex_data[18:20], 16)
+    source_ip = hex_data[24:32]
+    destination_ip = hex_data[32:40]
 
+    print(f"IPv4 Header:")
+    print(f"  {'Version:':<25} {hex_data[0:1]:<20} | {version}")
+    print(f"  {'WRONG Header Length:':<25} {hex_data[1:2]:<20} | {header_length}")
+    print(f"  {'Total Length:':<25} {hex_data[4:8]:<20} | {total_length}")
+    print(f"  {'WRONG Flags & Frag Offset:':<25} {hex_data[12:16]:<20} | {flags_fragoffset}")
+    print(f"    {'WRONG Reserved:':<25} {"0":<20}")
+    print(f"    {'WRONG DF (Do not Fragment):':<25} {"0":<20}")
+    print(f"    {'WRONG MF (More Fragment):':<25} {"0":<20}")
+    print(f"    {'WRONG Fragment Offset:':<25} {"0"} | {"0"}")
+    print(f"  {'Protocol:':<25} {hex_data[18:20]:<20} | {protocol}")
 
+    result = []
+    for i in range(0, len(source_ip), 2):
+        result.append(int(((source_ip[i:i+2])),16))
+    result = ".".join(str(item) for item in result)
+    print(f"  {'Source IP:':<25} {source_ip:<20} | {result}")
 
+    result2 = []
+    for i in range(0, len(destination_ip), 2):
+        result2.append(int(((destination_ip[i:i+2])),16))
+    result2 = ".".join(str(item) for item in result2)
+    print(f"  {'Destination IP:':<25} {destination_ip:<20} | {result2}")
 
+def parse_udp_header(hex_data):
+    source_port = int(hex_data[:4], 16)
+    destination_port = int(hex_data[4:8], 16)
+    length = int(hex_data[8:12], 16)
+    checksum = int(hex_data[12:16], 16)
+    payload = hex_data[16:]
+
+    print(f"UDP Header:")
+    print(f"  {'Source Port:':<25} {hex_data[:4]:<20} | {source_port}")
+    print(f"  {'Destination Port:':<25} {hex_data[4:8]:<20} | {destination_port}")
+    print(f"  {'Length:':<25} {hex_data[8:12]:<20} | {length}")
+    print(f"  {'Checksum:':<25} {hex_data[12:16]:<20} | {checksum}")
+    print(f"  {'Payload (hex):':<25} {payload}")
