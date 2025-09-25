@@ -73,22 +73,29 @@ def parse_arp_header(hex_data):
 
 def parse_IPV4_header(hex_data):
     version = int(hex_data[0:1], 16)
-    header_length = int(hex_data[1:2], 16)
+    header_length = int(int(hex_data[1:2]) * 32 / 8)
     total_length = int(hex_data[4:8], 16)
-    flags_fragoffset = int(hex_data[12:16], 16)
+
+    flags_fragoffset = bin(int(hex_data[12:14], 16))[:3]
+    flags_fragoffset_asBits = bin(int(hex_data[12:14], 16))[2:]
+    reserved_flag = flags_fragoffset_asBits[:1]
+    dont_fragment_flag = flags_fragoffset_asBits[1:2]
+    more_fragment_flag = flags_fragoffset_asBits[2:3]
+    fragment_offset = int(hex_data[14:16], 16)
+
     protocol = int(hex_data[18:20], 16)
     source_ip = hex_data[24:32]
     destination_ip = hex_data[32:40]
 
     print(f"IPv4 Header:")
     print(f"  {'Version:':<25} {hex_data[0:1]:<20} | {version}")
-    print(f"  {'WRONG Header Length:':<25} {hex_data[1:2]:<20} | {header_length}")
+    print(f"  {'Header Length:':<25} {hex_data[1:2]:<20} | {str(header_length) + ' bytes'}")
     print(f"  {'Total Length:':<25} {hex_data[4:8]:<20} | {total_length}")
-    print(f"  {'WRONG Flags & Frag Offset:':<25} {hex_data[12:16]:<20} | {flags_fragoffset}")
-    print(f"    {'WRONG Reserved:':<25} {"0":<20}")
-    print(f"    {'WRONG DF (Do not Fragment):':<25} {"0":<20}")
-    print(f"    {'WRONG MF (More Fragment):':<25} {"0":<20}")
-    print(f"    {'WRONG Fragment Offset:':<25} {"0"} | {"0"}")
+    print(f"  {'Flags & Frag Offset:':<25} {hex_data[12:16]:<20} | {flags_fragoffset}")
+    print(f"    {'Reserved:':<25} {reserved_flag:<20}")
+    print(f"    {'DF (Do not Fragment):':<25} {dont_fragment_flag:<20}")
+    print(f"    {'MF (More Fragment):':<25} {more_fragment_flag:<20}")
+    print(f"    {'Fragment Offset:':<25} {hex(int(hex_data[14:16], 16))} | {fragment_offset}")
     print(f"  {'Protocol:':<25} {hex_data[18:20]:<20} | {protocol}")
 
     result = []
