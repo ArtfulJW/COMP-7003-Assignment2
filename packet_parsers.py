@@ -78,6 +78,11 @@ def parse_IPV4_header(hex_data):
 
     flags_fragoffset = bin(int(hex_data[12:14], 16))[:3]
     flags_fragoffset_asBits = bin(int(hex_data[12:14], 16))[2:]
+
+    # left adjust to fix not enough zeros to display other flags
+    flags_fragoffset_asBits = flags_fragoffset_asBits.ljust(3,'0')
+
+    # Flag and frag offset only zero causes print errors for me
     reserved_flag = flags_fragoffset_asBits[:1]
     dont_fragment_flag = flags_fragoffset_asBits[1:2]
     more_fragment_flag = flags_fragoffset_asBits[2:3]
