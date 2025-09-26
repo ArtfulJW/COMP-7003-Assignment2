@@ -119,6 +119,8 @@ def parse_IPV4_header(hex_data):
 
     if protocol == 17:
         parse_udp_header(hex_data[30:])
+    elif protocol == 6:
+        parse_tcp_header(hex_data[30:])
 
 def parse_IPV6_header(hex_data):
     version = hex_data[:1]
