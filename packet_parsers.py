@@ -180,3 +180,15 @@ def parse_tcp_header(hex_data):
     print(f"  {'Checksum:':<25} {checksum:<20} | {int(checksum, 16)}")
     print(f"  {'Urgent Pointer:':<25} {urg_ptr:<20} | {int(urg_ptr, 16)}")
     print(f"  {'Payload (hex):':<25} {payload}")
+    
+def parse_ICMPV6_header(hex_data):
+    type = hex_data[:2]
+    code = hex_data[2:4]
+    checksum = hex_data[4:8]
+    payload = hex_data[8:]
+
+    print(f"ICMPv6 Header:")
+    print(f"  {'Type:':<25} {type:<20} | {int(type, 16)}")
+    print(f"  {'Code:':<25} {code:<20} | {int(code, 16)}")
+    print(f"  {'Checksum:':<25} {checksum:<20} | {int(checksum, 16)}")
+    print(f"  {'Payload (hex):':<25} {payload}")
