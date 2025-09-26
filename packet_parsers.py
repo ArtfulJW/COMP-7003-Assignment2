@@ -242,3 +242,42 @@ def parse_ICMP(hex_data):
     print(f"  {'Code:':<25} {code:<20} | {int(code, 16)}")
     print(f"  {'Checksum:':<25} {hex(int(checksum, 16)):<20} | {int(checksum, 16)}")
     print(f"  {'Payload (hex):':<25} {payload}")
+
+def parse_dns_header(hex_data):
+    transaction_id = hex_data[:4]
+    flags = hex_data[4:8]
+
+    flags_as_bits = bin(int(flags, 16))[2:].zfill(16)
+    response = flags_as_bits[:1]
+    opcode = flags_as_bits[1:5]
+    authoritative = flags_as_bits[5:6]
+    truncated = flags_as_bits[6:7]
+    recursion_desired = flags_as_bits[7:8]
+    recursion_available = flags_as_bits[8:9]
+    z_flag = flags_as_bits[9:10]
+    answer_authenticated = flags_as_bits[10:11]
+    non_authenticated = flags_as_bits[11:12]
+    reply_code = flags_as_bits[12:]
+
+    questions = hex_data[8:12]
+    answer_rrs = hex_data[12:16]
+    authority_rrs = hex_data[16:20]
+    additional_rrs = hex_data[20:24]
+
+    print(f"DNS Header:")
+    print(f"  {'Transaction ID:':<25} {hex(int(hex_data[:4], 16)):<20} | {int(transaction_id, 16)}")
+    print(f"  {'Flags:':<25} {flags:<20} | {bin(int(flags, 16))}")
+    print(f"     {'Response:':<25} {response:<20}")
+    print(f"     {'Opcode:':<25} {opcode:<20} | {int(opcode, 16)}")
+    print(f"     {'Authoritative:':<25} {authoritative:<20}")
+    print(f"     {'Truncated:':<25} {truncated:<20}")
+    print(f"     {'Recursion Desired:':<25} {recursion_desired:<20}")
+    print(f"     {'Recursion Available:':<25} {recursion_available:<20}")
+    print(f"     {'Z:':<25} {z_flag:<20} | {int(z_flag, 16)}")
+    print(f"     {'Answer Authenticated:':<25} {answer_authenticated:<20}")
+    print(f"     {'Non Authenticated Data:':<25} {non_authenticated:<20}")
+    print(f"     {'Reply Code:':<25} {reply_code:<20} | {int(reply_code, 16)}")
+    print(f"  {'Questions:':<25} {questions:<20} | {int(questions, 16)}")
+    print(f"  {'Answer RRs:':<25} {answer_rrs:<20} | {int(answer_rrs, 16)}")
+    print(f"  {'Authority RRs:':<25} {authority_rrs:<20} | {int(authority_rrs, 16)}")
+    print(f"  {'Additional RRs:':<25} {additional_rrs:<20} | {int(additional_rrs, 16)}")
