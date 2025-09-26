@@ -115,6 +115,44 @@ def parse_IPV4_header(hex_data):
     result2 = ".".join(str(item) for item in result2)
     print(f"  {'Destination IP:':<25} {destination_ip:<20} | {result2}")
 
+def parse_IPV6_header(hex_data):
+    version = hex_data[:1]
+
+    traffic_class = format(int(hex_data[1:3],16), 'b').zfill(8)
+    dscp = traffic_class[:6]
+    ecn = traffic_class[6:]
+
+    flow_label = hex_data[2:8]
+    payload_length = hex_data[8:12]
+    next_header = hex_data[12:14]
+    hop_limit = hex_data[14:16]
+
+    source_address = hex_data[16:48]
+    result = []
+    for i in range(0, len(source_address), 4):
+        result.append(source_address[i:i+4])
+    source_address_result = ":".join(str(item) for item in result)
+
+    destination_address = hex_data[48:80]
+    result = []
+    for i in range(0, len(destination_address), 4):
+        result.append(destination_address[i:i+4])
+    destination_address_result = ":".join(str(item) for item in result)
+
+    payload = hex_data[80:]
+
+    print(f"IPV6 Header:")
+    print(f"  {'Version:':<25} {bin(int(version, 16))[2:]:<20} | {version}")
+    print(f"  {'Traffic Class:':<25} {traffic_class:<20} | {int(traffic_class, 16)}")
+    print(f"     {'DSCP:':<25} {dscp:<20} | {int(dscp, 16)}")
+    print(f"     {'ECN:':<25} {ecn:<20} | {int(ecn, 16)}")
+    print(f"  {'Flow Label:':<25} {bin(int(flow_label, 16))[2:]:<20} | {int(flow_label, 16)}")
+    print(f"  {'Payload Length:':<25} {payload_length:<20} | {int(payload_length, 16)}")
+    print(f"  {'Next Header:':<25} {next_header:<20} | {int(next_header, 16)}")
+    print(f"  {'Hop Limit:':<25} {hop_limit:<20} | {int(hop_limit, 16)}")
+    print(f"  {'Source Address:':<25} {source_address_result:<20}")
+    print(f"  {'Destination Address:':<25} {destination_address_result:<20}")
+
 def parse_udp_header(hex_data):
     source_port = int(hex_data[:4], 16)
     destination_port = int(hex_data[4:8], 16)
