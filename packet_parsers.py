@@ -263,6 +263,7 @@ def parse_dns_header(hex_data):
     answer_rrs = hex_data[12:16]
     authority_rrs = hex_data[16:20]
     additional_rrs = hex_data[20:24]
+    payload = hex_data[24:]
 
     print(f"DNS Header:")
     print(f"  {'Transaction ID:':<25} {hex(int(hex_data[:4], 16)):<20} | {int(transaction_id, 16)}")
@@ -281,3 +282,4 @@ def parse_dns_header(hex_data):
     print(f"  {'Answer RRs:':<25} {answer_rrs:<20} | {int(answer_rrs, 16)}")
     print(f"  {'Authority RRs:':<25} {authority_rrs:<20} | {int(authority_rrs, 16)}")
     print(f"  {'Additional RRs:':<25} {additional_rrs:<20} | {int(additional_rrs, 16)}")
+    print(f"  {'Payload (hex):':<25} {payload}")
