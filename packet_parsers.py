@@ -14,6 +14,8 @@ def parse_ethernet_header(hex_data):
     # Route payload based on EtherType
     if ether_type == "0806":  # ARP
         parse_arp_header(payload)
+    elif ether_type == "0800":
+        parse_IPV4_header(payload)
     else:
         print(f"  {'Unknown EtherType:':<25} {ether_type:<20} | {int(ether_type, 16)}")
         print("  No parser available for this EtherType.")
@@ -114,6 +116,9 @@ def parse_IPV4_header(hex_data):
         result2.append(int(((destination_ip[i:i+2])),16))
     result2 = ".".join(str(item) for item in result2)
     print(f"  {'Destination IP:':<25} {destination_ip:<20} | {result2}")
+
+    if protocol == 17:
+        parse_udp_header(hex_data[30:])
 
 def parse_IPV6_header(hex_data):
     version = hex_data[:1]
