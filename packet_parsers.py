@@ -128,3 +128,55 @@ def parse_udp_header(hex_data):
     print(f"  {'Length:':<25} {hex_data[8:12]:<20} | {length}")
     print(f"  {'Checksum:':<25} {hex_data[12:16]:<20} | {checksum}")
     print(f"  {'Payload (hex):':<25} {payload}")
+    
+def parse_tcp_header(hex_data):
+    source_port = int(hex_data[:4], 16)
+    destination_port = int(hex_data[4:8], 16)
+    sequence_number = int(hex_data[8:16], 16)
+    acknowledgement_number = int(hex_data[16:24],16)
+
+    # Data Offset
+    data_offset = hex_data[24:28]
+    header_length = int(int(data_offset[:1]) * 32 / 8)
+
+
+    flags_as_bits = bin(int(data_offset, 16))
+
+    # Reserved (first 3 bits of the 1st byte of the Data Offset)
+    reserved_flag = flags_as_bits[5:8]
+    accurate_ecn = flags_as_bits[8:9]
+    cwr = flags_as_bits[9:10]
+    ece = flags_as_bits[10:11]
+    urg = flags_as_bits[11:12]
+    ack = flags_as_bits[12:13]
+    psh = flags_as_bits[13:14]
+    rst = flags_as_bits[14:15]
+    syn = flags_as_bits[15:16]
+    fin = flags_as_bits[16:17]
+
+    window = hex_data[28:32]
+    checksum = hex_data[32:36]
+    urg_ptr = hex_data[36:40]
+    payload = hex_data[40:]
+
+    print(f"TCP Header:")
+    print(f"  {'Source Port:':<25} {hex_data[:4]:<20} | {source_port}")
+    print(f"  {'Destination Port:':<25} {hex_data[4:8]:<20} | {destination_port}")
+    print(f"  {'Sequence Number:':<25} {hex_data[8:16]:<20} | {sequence_number}")
+    print(f"  {'Acknowledgement Number:':<25} {hex_data[16:24]:<20} | {acknowledgement_number}")
+    print(f"  {'Data Offset:':<25} {data_offset[:1]:<20} | {str(header_length) + ' bytes'}")
+    print(f"  {'Reserved:':<25} {bin(int(reserved_flag)):<20} | {int(reserved_flag, 16)}")
+    print(f"  {'Flags:':<25} {format(int(data_offset[1:], 16), '#010b'):<20} | {int(flags_as_bits[9:], 2)}")
+    print(f"     {'Accurate ECN:':<25} {accurate_ecn:<20}")
+    print(f"     {'CWR:':<25} {cwr:<20}")
+    print(f"     {'ECE:':<25} {ece:<20}")
+    print(f"     {'URG:':<25} {urg:<20}")
+    print(f"     {'ACK:':<25} {ack:<20}")
+    print(f"     {'PSH:':<25} {psh:<20}")
+    print(f"     {'RST:':<25} {rst:<20}")
+    print(f"     {'SYN:':<25} {syn:<20}")
+    print(f"     {'FIN:':<25} {fin:<20}")
+    print(f"  {'Window Size:':<25} {window:<20} | {int(window, 16)}")
+    print(f"  {'Checksum:':<25} {checksum:<20} | {int(checksum, 16)}")
+    print(f"  {'Urgent Pointer:':<25} {urg_ptr:<20} | {int(urg_ptr, 16)}")
+    print(f"  {'Payload (hex):':<25} {payload}")
