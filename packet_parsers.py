@@ -16,6 +16,8 @@ def parse_ethernet_header(hex_data):
         parse_arp_header(payload)
     elif ether_type == "0800":
         parse_IPV4_header(payload)
+    elif ether_type == "86dd":
+        parse_IPV6_header(payload)
     else:
         print(f"  {'Unknown EtherType:':<25} {ether_type:<20} | {int(ether_type, 16)}")
         print("  No parser available for this EtherType.")
@@ -163,12 +165,14 @@ def parse_IPV6_header(hex_data):
     print(f"  {'Source Address:':<25} {source_address_result:<20}")
     print(f"  {'Destination Address:':<25} {destination_address_result:<20}")
 
+    protocol = int(next_header, 16)
     if protocol == 17:
         parse_udp_header(payload)
     elif protocol == 6:
         parse_tcp_header(payload)
     elif protocol == 58:
         # ICMP is 58 for IPv6
+        print("AAAAAAA")
         parse_ICMPV6_header(payload)
 
 def parse_udp_header(hex_data):
