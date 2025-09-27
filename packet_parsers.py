@@ -169,7 +169,7 @@ def parse_IPV6_header(hex_data):
     print(f"  {'Traffic Class:':<25} {traffic_class:<20} | {int(traffic_class, 16)}")
     print(f"     {'DSCP:':<25} {dscp:<20} | {int(dscp, 16)}")
     print(f"     {'ECN:':<25} {ecn:<20} | {int(ecn, 16)}")
-    print(f"  {'Flow Label:':<25} {bin(int(flow_label, 16))[2:]:<20} | {int(flow_label, 16)}")
+    print(f"     {'Flow Label:':<25} {bin(int(flow_label, 16))[2:]:<20} | {int(flow_label, 16)}")
     print(f"  {'Payload Length:':<25} {payload_length:<20} | {int(payload_length, 16)}")
     print(f"  {'Next Header:':<25} {next_header:<20} | {int(next_header, 16)}")
     print(f"  {'Hop Limit:':<25} {hop_limit:<20} | {int(hop_limit, 16)}")
