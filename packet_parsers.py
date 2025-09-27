@@ -56,25 +56,25 @@ def parse_arp_header(hex_data):
 
     # Byte 8 to 13 is the MAC Address
     result = ":".join(MAC_Address[i:i+2] for i in range(0, len(MAC_Address), 2))
-    print(f"  {'MAC Address:':<25} {hex_data[16:28]:<20} | {result}")
+    print(f"  {'Sender MAC Address:':<25} {hex_data[16:28]:<20} | {result}")
 
     # Byte 14 to 17 is the IP Address
     result2 = []
     for i in range(0, len(Sender_IP), 2):
         result2.append(int(((Sender_IP[i:i+2])),16))
     result2 = ".".join(str(item) for item in result2)
-    print(f"  {'Sender IP:':<25} {hex_data[28:36]:<20} | {result2}")
+    print(f"  {'Sender IP Address:':<25} {hex_data[28:36]:<20} | {result2}")
 
     # Byte 18 to 23 is Target MAC Address
     result3 = ":".join(TargetMAC_Address[i:i+2] for i in range(0, len(TargetMAC_Address), 2))
-    print(f"  {'Target MAC:':<25} {hex_data[36:48]:<20} | {result3}")
+    print(f"  {'Target MAC Address:':<25} {hex_data[36:48]:<20} | {result3}")
 
     # Byte 24 to 27 is Target IP Address
     result4 = []
     for i in range(0, len(TargetIP_Address), 2):
         result4.append(int(((TargetIP_Address[i:i+2])),16))
     result4 = ".".join(str(item) for item in result4)
-    print(f"  {'Target IP:':<25} {hex_data[48:56]:<20} | {result4}")
+    print(f"  {'Target IP Address:':<25} {hex_data[48:56]:<20} | {result4}")
 
 def parse_IPV4_header(hex_data):
     version = int(hex_data[0:1], 16)
