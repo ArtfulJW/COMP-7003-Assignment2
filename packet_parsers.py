@@ -121,6 +121,9 @@ def parse_IPV4_header(hex_data):
         parse_udp_header(hex_data[40:])
     elif protocol == 6:
         parse_tcp_header(hex_data[40:])
+    elif protocol == 1:
+        # ICMP is 1 for IPv4
+        parse_ICMP(hex_data[40:])
 
 def parse_IPV6_header(hex_data):
     version = hex_data[:1]
@@ -160,6 +163,14 @@ def parse_IPV6_header(hex_data):
     print(f"  {'Source Address:':<25} {source_address_result:<20}")
     print(f"  {'Destination Address:':<25} {destination_address_result:<20}")
 
+    if protocol == 17:
+        parse_udp_header(payload)
+    elif protocol == 6:
+        parse_tcp_header(payload)
+    elif protocol == 58:
+        # ICMP is 58 for IPv6
+        parse_ICMPV6_header(payload)
+
 def parse_udp_header(hex_data):
     source_port = int(hex_data[:4], 16)
     destination_port = int(hex_data[4:8], 16)
@@ -173,6 +184,9 @@ def parse_udp_header(hex_data):
     print(f"  {'Length:':<25} {hex_data[8:12]:<20} | {length}")
     print(f"  {'Checksum:':<25} {hex_data[12:16]:<20} | {checksum}")
     print(f"  {'Payload (hex):':<25} {payload}")
+
+    if source_port == 53 or destination_port == 53:
+        parse_dns_header(payload)
     
 def parse_tcp_header(hex_data):
     source_port = int(hex_data[:4], 16)
