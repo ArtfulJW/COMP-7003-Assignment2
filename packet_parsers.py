@@ -179,25 +179,21 @@ def parse_tcp_header(hex_data):
     destination_port = int(hex_data[4:8], 16)
     sequence_number = int(hex_data[8:16], 16)
     acknowledgement_number = int(hex_data[16:24],16)
+    header_length = int(hex_data[24:25], 16) * 4
 
-    # Data Offset
-    data_offset = hex_data[24:28]
-    header_length = int(int(data_offset[:1]) * 32 / 8)
-
-
-    flags_as_bits = bin(int(data_offset, 16))
+    flags_as_bits = bin(int(hex_data[24:28], 16))[2:]
 
     # Reserved (first 3 bits of the 1st byte of the Data Offset)
-    reserved_flag = flags_as_bits[5:8]
-    accurate_ecn = flags_as_bits[8:9]
-    cwr = flags_as_bits[9:10]
-    ece = flags_as_bits[10:11]
-    urg = flags_as_bits[11:12]
-    ack = flags_as_bits[12:13]
-    psh = flags_as_bits[13:14]
-    rst = flags_as_bits[14:15]
-    syn = flags_as_bits[15:16]
-    fin = flags_as_bits[16:17]
+    reserved_flag = flags_as_bits[4:7]
+    accurate_ecn = flags_as_bits[7:8]
+    cwr = flags_as_bits[8:9]
+    ece = flags_as_bits[9:10]
+    urg = flags_as_bits[10:11]
+    ack = flags_as_bits[11:12]
+    psh = flags_as_bits[12:13]
+    rst = flags_as_bits[13:14]
+    syn = flags_as_bits[14:15]
+    fin = flags_as_bits[15:16]
 
     window = hex_data[28:32]
     checksum = hex_data[32:36]
@@ -209,9 +205,9 @@ def parse_tcp_header(hex_data):
     print(f"  {'Destination Port:':<25} {hex_data[4:8]:<20} | {destination_port}")
     print(f"  {'Sequence Number:':<25} {hex_data[8:16]:<20} | {sequence_number}")
     print(f"  {'Acknowledgement Number:':<25} {hex_data[16:24]:<20} | {acknowledgement_number}")
-    print(f"  {'Data Offset:':<25} {data_offset[:1]:<20} | {str(header_length) + ' bytes'}")
-    print(f"  {'Reserved:':<25} {bin(int(reserved_flag)):<20} | {int(reserved_flag, 16)}")
-    print(f"  {'Flags:':<25} {format(int(data_offset[1:], 16), '#010b'):<20} | {int(flags_as_bits[9:], 2)}")
+    print(f"  {'Header Length:':<25} {hex_data[24:25]:<20} | {str(header_length) + ' bytes'}")
+    print(f"  {'Flags:':<25} {hex(int(hex_data[25:28], 16)):<20} | {int(flags_as_bits[9:], 2)}")
+    print(f"     {'Reserved:':<25} {reserved_flag:<20} | {int(reserved_flag, 16)}")
     print(f"     {'Accurate ECN:':<25} {accurate_ecn:<20}")
     print(f"     {'CWR:':<25} {cwr:<20}")
     print(f"     {'ECE:':<25} {ece:<20}")
