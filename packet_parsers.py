@@ -80,6 +80,8 @@ def parse_IPV4_header(hex_data):
     version = int(hex_data[0:1], 16)
     header_length = int(int(hex_data[1:2]) * 32 / 8)
     total_length = int(hex_data[4:8], 16)
+    differentiated_services_field = hex(int(hex_data[2:4], 16))[2:].zfill(8)
+    identification = hex_data[8:12]
 
     flags_fragoffset = bin(int(hex_data[12:14], 16))[:3]
     flags_fragoffset_asBits = bin(int(hex_data[12:14], 16))[2:]
@@ -102,7 +104,10 @@ def parse_IPV4_header(hex_data):
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Version:':<25} {hex_data[0:1]:<20} | {version}")
     print(f"  {'Header Length:':<25} {hex_data[1:2]:<20} | {str(header_length) + ' bytes'}")
+    print(f"  {'Differentiated Code Point:':<25}{differentiated_services_field[:6]:<20} | {int(differentiated_services_field[:6])}")
+    print(f"  {'ECN:':<25} {differentiated_services_field[6:]:<20} | {int(differentiated_services_field[6:]):<20}")
     print(f"  {'Total Length:':<25} {hex_data[4:8]:<20} | {total_length}")
+    print(f"  {'Identification:':<25} {hex(int(identification,16)):<20} | {int(identification, 16)}")
     print(f"  {'Flags & Frag Offset:':<25} {hex_data[12:16]:<20} | {flags_fragoffset}")
     print(f"    {'Reserved:':<25} {reserved_flag:<20}")
     print(f"    {'DF (Do not Fragment):':<25} {dont_fragment_flag:<20}")
@@ -116,13 +121,13 @@ def parse_IPV4_header(hex_data):
     for i in range(0, len(source_ip), 2):
         result.append(int(((source_ip[i:i+2])),16))
     result = ".".join(str(item) for item in result)
-    print(f"  {'Source IP:':<25} {source_ip:<20} | {result}")
+    print(f"  {'Source Address:':<25} {source_ip:<20} | {result}")
 
     result2 = []
     for i in range(0, len(destination_ip), 2):
         result2.append(int(((destination_ip[i:i+2])),16))
     result2 = ".".join(str(item) for item in result2)
-    print(f"  {'Destination IP:':<25} {destination_ip:<20} | {result2}")
+    print(f"  {'Destination Address:':<25} {destination_ip:<20} | {result2}")
 
     if protocol == 17:
         parse_udp_header(hex_data[40:])
