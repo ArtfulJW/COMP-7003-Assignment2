@@ -172,7 +172,6 @@ def parse_IPV6_header(hex_data):
         parse_tcp_header(payload)
     elif protocol == 58:
         # ICMP is 58 for IPv6
-        print("AAAAAAA")
         parse_ICMPV6_header(payload)
 
 def parse_udp_header(hex_data):
