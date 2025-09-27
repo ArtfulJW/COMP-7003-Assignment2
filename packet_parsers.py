@@ -39,6 +39,7 @@ def parse_arp_header(hex_data):
     TargetIP_Address = hex_data[48:56]
 
     print(f"ARP Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Hardware Type:':<25} {hex_data[:4]:<20} | {hardware_type}")
 
     # Byte 2 to 3 is the Protocol Type
@@ -97,6 +98,7 @@ def parse_IPV4_header(hex_data):
     destination_ip = hex_data[32:40]
 
     print(f"IPv4 Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Version:':<25} {hex_data[0:1]:<20} | {version}")
     print(f"  {'Header Length:':<25} {hex_data[1:2]:<20} | {str(header_length) + ' bytes'}")
     print(f"  {'Total Length:':<25} {hex_data[4:8]:<20} | {total_length}")
@@ -154,6 +156,7 @@ def parse_IPV6_header(hex_data):
     payload = hex_data[80:]
 
     print(f"IPV6 Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Version:':<25} {bin(int(version, 16))[2:]:<20} | {version}")
     print(f"  {'Traffic Class:':<25} {traffic_class:<20} | {int(traffic_class, 16)}")
     print(f"     {'DSCP:':<25} {dscp:<20} | {int(dscp, 16)}")
@@ -182,6 +185,7 @@ def parse_udp_header(hex_data):
     payload = hex_data[16:]
 
     print(f"UDP Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Source Port:':<25} {hex_data[:4]:<20} | {source_port}")
     print(f"  {'Destination Port:':<25} {hex_data[4:8]:<20} | {destination_port}")
     print(f"  {'Length:':<25} {hex_data[8:12]:<20} | {length}")
@@ -218,6 +222,7 @@ def parse_tcp_header(hex_data):
     payload = hex_data[40:]
 
     print(f"TCP Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Source Port:':<25} {hex_data[:4]:<20} | {source_port}")
     print(f"  {'Destination Port:':<25} {hex_data[4:8]:<20} | {destination_port}")
     print(f"  {'Sequence Number:':<25} {hex_data[8:16]:<20} | {sequence_number}")
@@ -246,6 +251,7 @@ def parse_ICMPV6_header(hex_data):
     payload = hex_data[8:]
 
     print(f"ICMPv6 Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Type:':<25} {type:<20} | {int(type, 16)}")
     print(f"  {'Code:':<25} {code:<20} | {int(code, 16)}")
     print(f"  {'Checksum:':<25} {checksum:<20} | {int(checksum, 16)}")
@@ -258,6 +264,7 @@ def parse_ICMP(hex_data):
     payload = hex_data[8:]
 
     print(f"ICMP Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Type:':<25} {type:<20} | {int(type, 16)}")
     print(f"  {'Code:':<25} {code:<20} | {int(code, 16)}")
     print(f"  {'Checksum:':<25} {hex(int(checksum, 16)):<20} | {int(checksum, 16)}")
@@ -286,6 +293,7 @@ def parse_dns_header(hex_data):
     payload = hex_data[24:]
 
     print(f"DNS Header:")
+    print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Transaction ID:':<25} {hex(int(hex_data[:4], 16)):<20} | {int(transaction_id, 16)}")
     print(f"  {'Flags:':<25} {flags:<20} | {bin(int(flags, 16))}")
     print(f"     {'Response:':<25} {response:<20}")
