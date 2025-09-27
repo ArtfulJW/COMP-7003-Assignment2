@@ -118,9 +118,9 @@ def parse_IPV4_header(hex_data):
     print(f"  {'Destination IP:':<25} {destination_ip:<20} | {result2}")
 
     if protocol == 17:
-        parse_udp_header(hex_data[30:])
+        parse_udp_header(hex_data[40:])
     elif protocol == 6:
-        parse_tcp_header(hex_data[30:])
+        parse_tcp_header(hex_data[40:])
 
 def parse_IPV6_header(hex_data):
     version = hex_data[:1]
