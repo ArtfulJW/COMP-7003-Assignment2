@@ -92,8 +92,9 @@ def parse_IPV4_header(hex_data):
     dont_fragment_flag = flags_fragoffset_asBits[1:2]
     more_fragment_flag = flags_fragoffset_asBits[2:3]
     fragment_offset = int(hex_data[14:16], 16)
-
+    time_to_live = hex_data[16:18]
     protocol = int(hex_data[18:20], 16)
+    checksum = hex_data[20:24]
     source_ip = hex_data[24:32]
     destination_ip = hex_data[32:40]
 
@@ -107,7 +108,9 @@ def parse_IPV4_header(hex_data):
     print(f"    {'DF (Do not Fragment):':<25} {dont_fragment_flag:<20}")
     print(f"    {'MF (More Fragment):':<25} {more_fragment_flag:<20}")
     print(f"    {'Fragment Offset:':<25} {hex(int(hex_data[14:16], 16))} | {fragment_offset}")
+    print(f"  {'Time To Live:':<25} {time_to_live:<20} | {int(time_to_live, 16)}")
     print(f"  {'Protocol:':<25} {hex_data[18:20]:<20} | {protocol}")
+    print(f"  {'Checksum:':<25} {hex(int(checksum, 16)):<20} | {int(checksum, 16)}")
 
     result = []
     for i in range(0, len(source_ip), 2):
