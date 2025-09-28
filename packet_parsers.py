@@ -252,6 +252,9 @@ def parse_tcp_header(hex_data):
     print(f"  {'Checksum:':<25} {checksum:<20} | {int(checksum, 16)}")
     print(f"  {'Urgent Pointer:':<25} {urg_ptr:<20} | {int(urg_ptr, 16)}")
     print(f"  {'Payload (hex):':<25} {payload}")
+
+    if source_port == 53 or destination_port == 53:
+        parse_dns_header(payload)
     
 def parse_ICMPV6_header(hex_data):
     type = hex_data[:2]
