@@ -1,3 +1,5 @@
+import datetime
+
 # Parse Ethernet header
 def parse_ethernet_header(hex_data):
     dest_mac = ':'.join(hex_data[i:i+2] for i in range(0, 12, 2))
@@ -32,7 +34,6 @@ def parse_arp_header(hex_data):
     hardware_size = int(hex_data[8:10], 16)
     protocol_size = int(hex_data[10:12], 16)
     operation = int(hex_data[12:16], 16)
-    # MAC_Address = [int(hex_data[16:18]), int(hex_data[18,20]), int(hex_data[20,22]), int(hex_data[22,24]), int(hex_data[24,26]), int(hex_data[26:28])]
     MAC_Address = hex_data[16:28]
     Sender_IP = hex_data[28:36]
     TargetMAC_Address = hex_data[36:48]
@@ -269,13 +270,26 @@ def parse_ICMP(hex_data):
     type = hex_data[:2]
     code = hex_data[2:4]
     checksum = hex_data[4:8]
-    payload = hex_data[8:]
+    identifier_left = hex_data[8:10]
+    identifier_right = hex_data[10:12]
+    identifer_be = str(identifier_left + identifier_right)
+    identifier_le = str(identifier_right + identifier_left)
+    sequence_left = hex_data[12:14]
+    sequence_right = hex_data[14:16]
+    sequence_be = str(sequence_left + sequence_right)
+    sequence_le = str(sequence_right + sequence_left)
+
+    payload = hex_data[48:]
 
     print(f"ICMP Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Type:':<25} {type:<20} | {int(type, 16)}")
     print(f"  {'Code:':<25} {code:<20} | {int(code, 16)}")
     print(f"  {'Checksum:':<25} {hex(int(checksum, 16)):<20} | {int(checksum, 16)}")
+    print(f"  {'Identifier(BE):':<25} {hex(int(identifer_be, 16)):<20} | {int(identifer_be, 16)}")
+    print(f"  {'Identifier(LE):':<25} {hex(int(identifier_le, 16)):<20} | {int(identifier_le, 16)}")
+    print(f"  {'Sequence(BE):':<25} {hex(int(sequence_be, 16)):<20} | {int(sequence_be, 16)}")
+    print(f"  {'Sequence(LE):':<25} {hex(int(sequence_le, 16)):<20} | {int(sequence_le, 16)}")
     print(f"  {'Payload (hex):':<25} {payload}")
 
 def parse_dns_header(hex_data):
