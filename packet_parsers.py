@@ -279,7 +279,7 @@ def parse_ICMP(hex_data):
     sequence_be = str(sequence_left + sequence_right)
     sequence_le = str(sequence_right + sequence_left)
 
-    payload = hex_data[48:]
+    payload = hex_data[16:]
 
     print(f"ICMP Header:")
     print(f"Raw Hex Dump: {hex_data}")
