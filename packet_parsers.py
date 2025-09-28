@@ -1,5 +1,3 @@
-import datetime
-
 # Parse Ethernet header
 def parse_ethernet_header(hex_data):
     dest_mac = ':'.join(hex_data[i:i+2] for i in range(0, 12, 2))
