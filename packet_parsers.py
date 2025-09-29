@@ -204,12 +204,14 @@ def parse_IPV6_header(hex_data):
         parse_ICMPV6_header(payload)
 
 def parse_udp_header(hex_data):
+    # Get the Header fields for UDP
     source_port = int(hex_data[:4], 16)
     destination_port = int(hex_data[4:8], 16)
     length = int(hex_data[8:12], 16)
     checksum = int(hex_data[12:16], 16)
     payload = hex_data[16:]
 
+    # Print the Header fields for UDP
     print(f"UDP Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Source Port:':<25} {hex_data[:4]:<20} | {source_port}")
@@ -218,6 +220,7 @@ def parse_udp_header(hex_data):
     print(f"  {'Checksum:':<25} {hex_data[12:16]:<20} | {checksum}")
     print(f"  {'Payload (hex):':<25} {payload}")
 
+    # Check the source and destination port if we need to parse dns for the payload
     if source_port == 53 or destination_port == 53:
         parse_dns_header(payload)
     
