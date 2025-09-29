@@ -225,12 +225,14 @@ def parse_udp_header(hex_data):
         parse_dns_header(payload)
     
 def parse_tcp_header(hex_data):
+    # Get the Header fields for TCP
     source_port = int(hex_data[:4], 16)
     destination_port = int(hex_data[4:8], 16)
     sequence_number = int(hex_data[8:16], 16)
     acknowledgement_number = int(hex_data[16:24],16)
     header_length = int(hex_data[24:25], 16) * 4
 
+    # Convert Hex to bits to extract seperate flags
     flags_as_bits = bin(int(hex_data[24:28], 16))[2:]
 
     # Reserved (first 3 bits of the 1st byte of the Data Offset)
@@ -245,11 +247,13 @@ def parse_tcp_header(hex_data):
     syn = flags_as_bits[14:15]
     fin = flags_as_bits[15:16]
 
+    # Get the rest of the header fields
     window = hex_data[28:32]
     checksum = hex_data[32:36]
     urg_ptr = hex_data[36:40]
     payload = hex_data[40:]
 
+    # Display the Header Fields
     print(f"TCP Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Source Port:':<25} {hex_data[:4]:<20} | {source_port}")
@@ -273,6 +277,7 @@ def parse_tcp_header(hex_data):
     print(f"  {'Urgent Pointer:':<25} {urg_ptr:<20} | {int(urg_ptr, 16)}")
     print(f"  {'Payload (hex):':<25} {payload}")
 
+    # Check the source and destination port if we need to parse dns for the payload
     if source_port == 53 or destination_port == 53:
         parse_dns_header(payload)
     
