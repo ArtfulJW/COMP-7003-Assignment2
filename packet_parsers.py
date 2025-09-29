@@ -30,6 +30,7 @@ def parse_ethernet_header(hex_data):
 
 # Parse ARP header
 def parse_arp_header(hex_data):
+    # Get the ARP Header fields
     hardware_type = int(hex_data[:4], 16)
     protocol_type = int(hex_data[4:8], 16)
     hardware_size = int(hex_data[8:10], 16)
@@ -40,6 +41,7 @@ def parse_arp_header(hex_data):
     TargetMAC_Address = hex_data[36:48]
     TargetIP_Address = hex_data[48:56]
 
+    # Print the ARP Header Fields
     print(f"ARP Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Hardware Type:':<25} {hex_data[:4]:<20} | {hardware_type}")
