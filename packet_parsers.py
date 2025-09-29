@@ -148,31 +148,38 @@ def parse_IPV4_header(hex_data):
         parse_ICMP(hex_data[40:])
 
 def parse_IPV6_header(hex_data):
+    # Get the Version Header
     version = hex_data[:1]
 
+    # Get the traffic class header field
     traffic_class = format(int(hex_data[1:3],16), 'b').zfill(8)
     dscp = traffic_class[:6]
     ecn = traffic_class[6:]
 
+    # Getting the IPv6 Header Fields
     flow_label = hex_data[2:8]
     payload_length = hex_data[8:12]
     next_header = hex_data[12:14]
     hop_limit = hex_data[14:16]
 
+    # Construct the Source Address for display
     source_address = hex_data[16:48]
     result = []
     for i in range(0, len(source_address), 4):
         result.append(source_address[i:i+4])
     source_address_result = ":".join(str(item) for item in result)
 
+    # Construct the Destination Address for display
     destination_address = hex_data[48:80]
     result = []
     for i in range(0, len(destination_address), 4):
         result.append(destination_address[i:i+4])
     destination_address_result = ":".join(str(item) for item in result)
 
+    # Extract the Payload
     payload = hex_data[80:]
 
+    # Display the IPv6 Header Fields
     print(f"IPV6 Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Version:':<25} {bin(int(version, 16))[2:]:<20} | {version}")
@@ -186,6 +193,7 @@ def parse_IPV6_header(hex_data):
     print(f"  {'Source Address:':<25} {source_address_result:<20}")
     print(f"  {'Destination Address:':<25} {destination_address_result:<20}")
 
+    # Check the protocol type and call the appropriate header parser for it
     protocol = int(next_header, 16)
     if protocol == 17:
         parse_udp_header(payload)
