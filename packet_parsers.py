@@ -81,12 +81,14 @@ def parse_arp_header(hex_data):
     print(f"  {'Target IP Address:':<25} {hex_data[48:56]:<20} | {result4}")
 
 def parse_IPV4_header(hex_data):
+    # Get the IPv4 Header Fields
     version = int(hex_data[0:1], 16)
     header_length = int(int(hex_data[1:2]) * 32 / 8)
     total_length = int(hex_data[4:8], 16)
     differentiated_services_field = hex(int(hex_data[2:4], 16))[2:].zfill(8)
     identification = hex_data[8:12]
 
+    # Break up the Flags into individual bits
     flags_fragoffset = bin(int(hex_data[12:14], 16))[:3]
     flags_fragoffset_asBits = bin(int(hex_data[12:14], 16))[2:]
 
@@ -104,6 +106,7 @@ def parse_IPV4_header(hex_data):
     source_ip = hex_data[24:32]
     destination_ip = hex_data[32:40]
 
+    # Print the Header Fields for IPv4
     print(f"IPv4 Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Version:':<25} {hex_data[0:1]:<20} | {version}")
@@ -121,18 +124,21 @@ def parse_IPV4_header(hex_data):
     print(f"  {'Protocol:':<25} {hex_data[18:20]:<20} | {protocol}")
     print(f"  {'Checksum:':<25} {hex(int(checksum, 16)):<20} | {int(checksum, 16)}")
 
+    # Construct the Source Address for display
     result = []
     for i in range(0, len(source_ip), 2):
         result.append(int(((source_ip[i:i+2])),16))
     result = ".".join(str(item) for item in result)
     print(f"  {'Source Address:':<25} {source_ip:<20} | {result}")
 
+    # Construct the Destination Address for display
     result2 = []
     for i in range(0, len(destination_ip), 2):
         result2.append(int(((destination_ip[i:i+2])),16))
     result2 = ".".join(str(item) for item in result2)
     print(f"  {'Destination Address:':<25} {destination_ip:<20} | {result2}")
 
+    # Check the protocol type and call the appropriate header parser for it
     if protocol == 17:
         parse_udp_header(hex_data[40:])
     elif protocol == 6:
