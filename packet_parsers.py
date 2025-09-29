@@ -282,11 +282,13 @@ def parse_tcp_header(hex_data):
         parse_dns_header(payload)
     
 def parse_ICMPV6_header(hex_data):
+    # Get the header fields for ICMP6
     type = hex_data[:2]
     code = hex_data[2:4]
     checksum = hex_data[4:8]
     payload = hex_data[8:]
 
+    # Print the header fields for ICMP6
     print(f"ICMPv6 Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Type:':<25} {type:<20} | {int(type, 16)}")
