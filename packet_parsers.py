@@ -297,6 +297,7 @@ def parse_ICMPV6_header(hex_data):
     print(f"  {'Payload (hex):':<25} {payload}")
 
 def parse_ICMP(hex_data):
+    # Get the header fields for ICMP
     type = hex_data[:2]
     code = hex_data[2:4]
     checksum = hex_data[4:8]
@@ -309,8 +310,10 @@ def parse_ICMP(hex_data):
     sequence_be = str(sequence_left + sequence_right)
     sequence_le = str(sequence_right + sequence_left)
 
+    # Extract the payload
     payload = hex_data[16:]
 
+    # Print the header fields
     print(f"ICMP Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Type:':<25} {type:<20} | {int(type, 16)}")
