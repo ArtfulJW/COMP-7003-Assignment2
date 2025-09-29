@@ -326,9 +326,13 @@ def parse_ICMP(hex_data):
     print(f"  {'Payload (hex):':<25} {payload}")
 
 def parse_dns_header(hex_data):
+    # Get the DNS header fields
     transaction_id = hex_data[:4]
+
+    # Extract the flags
     flags = hex_data[4:8]
 
+    # Convert to bits and extract the flags
     flags_as_bits = bin(int(flags, 16))[2:].zfill(16)
     response = flags_as_bits[:1]
     opcode = flags_as_bits[1:5]
@@ -341,12 +345,14 @@ def parse_dns_header(hex_data):
     non_authenticated = flags_as_bits[11:12]
     reply_code = flags_as_bits[12:]
 
+    # Get the other header fields
     questions = hex_data[8:12]
     answer_rrs = hex_data[12:16]
     authority_rrs = hex_data[16:20]
     additional_rrs = hex_data[20:24]
     payload = hex_data[24:]
 
+    # Display the header fields
     print(f"DNS Header:")
     print(f"Raw Hex Dump: {hex_data}")
     print(f"  {'Transaction ID:':<25} {hex(int(hex_data[:4], 16)):<20} | {int(transaction_id, 16)}")
